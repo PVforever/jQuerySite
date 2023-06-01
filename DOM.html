@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <title>Document</title>
+    <style>
+        .completed {
+            text-decoration: line-through;
+            color: #9c9c9c;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -16,7 +22,9 @@
                 <input type="text" id="userName">
                 <input type="button" value="add" id="buttonAdd">
                 <ul id="names">
-                    <li>Guest</li>
+                    <li class="completed">Guest1</li>
+                    <li>Guest2</li>
+                    <li>Guest3</li>
                 </ul>
             </div>
             <div class="col-2"></div>
@@ -28,9 +36,27 @@
     <script>
         $(function () {
             $('userName').val("Guest")
+            //click後可新增li
             $('#buttonAdd').on('click',function () {
                 const name = $('#userName').val();
-                $('#names').append("<li>" + name + "</li>");
+                // $('#names').append("<li>" + name + "</li>");
+                $('#names').append(`<li>${name}</li>`);
+            })
+            //生成的li也能綁定事件
+            $('#names').on('click','li',function(){
+                $(this).toggleClass('completed');
+            })
+
+            //移除
+            //$('#names').empty();
+            // $('#names>li:nth-child(1)').remove();
+
+            //each
+            // console.log($('#names>li').length);
+            $('#names>li').each(function(){
+                if($(this).hasClass('completed')){
+                    $(this).remove();
+                }
             })
         })
     </script>
