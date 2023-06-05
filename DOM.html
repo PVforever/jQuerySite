@@ -11,6 +11,24 @@
             text-decoration: line-through;
             color: #9c9c9c;
         }
+
+        .s1 {
+            color: red;
+            background-color: green;
+            border: 1px solid #9c9c9c;
+            text-decoration: underline;
+            text-align: center;
+            width: 400px;
+        }
+
+        .s2 {
+            color: green;
+            background-color: red;
+            border-radius: 25px;
+            text-decoration: none;
+            text-align: center;
+            width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -18,7 +36,23 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-8">
-                <h2>jQuery 練習</h2>
+                <h2 id="myH">jQuery 練習</h2>
+                <div id="alla">
+                    <a href="effects.html">effects</a> | 
+                    <a href="events.html">events</a> | 
+                    <a href="https://www.ispan.com.tw">ispan</a> | 
+                    <a href="https://tw.yahoo.com">yahoo</a>
+                </div>
+                <hr/>
+                <button id="classtoggle">切換</button>
+                <h1 id="theH">wwwwwwwwwwwww</h1>
+                <h1>wwwwwwwwwwwww</h1>
+                <h1>wwwwwwwwwwwww</h1>
+                <h1>wwwwwwwwwwwww</h1>
+                <h1>wwwwwwwwwwwww</h1>
+                <h1>wwwwwwwwwwwww</h1>
+                <h1>wwwwwwwwwwwww</h1>
+                <h1>wwwwwwwwwwwww</h1>
                 <input type="text" id="userName">
                 <input type="button" value="add" id="buttonAdd">
                 <ul id="names">
@@ -26,6 +60,25 @@
                     <li>Guest2</li>
                     <li>Guest3</li>
                 </ul>
+                <select name="" id="">
+                    <option value="a">Item1</option>
+                    <option value="b">Item2</option>
+                    <option value="c">Item3</option>
+                    <option value="d">Item4</option>
+                </select>
+                <span id="texxt"></span>
+                <hr/>
+                <div id="div2">
+                    <input type="button" id="togglecheckbox" value="checked的切換">
+                    <input type="checkbox" id="toggle">toggleall<br/>
+                    <input type="checkbox" name="a" value="a1">A1
+                    <input type="checkbox" name="a" value="a2">A2
+                    <input type="checkbox" name="a" value="a3">A3
+                    <input type="checkbox" name="a" value="a4">A4
+                    <input type="checkbox" name="a" value="a5">A5
+                    <input type="button" id="togglechecked" value="取出打勾的checkbox 的 value">
+                    <span id="aw"></span>
+                </div>
             </div>
             <div class="col-2"></div>
         </div>
@@ -35,7 +88,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script>
         $(function () {
-            $('userName').val("Guest")
+            $('#userName').val("Guest")
             //click後可新增li
             $('#buttonAdd').on('click',function () {
                 const name = $('#userName').val();
@@ -46,6 +99,20 @@
             $('#names').on('click','li',function(){
                 $(this).toggleClass('completed');
             })
+            // this vs $(this) 加到$()內即可使用jquery的方式，沒加只能套用無函式庫的方式
+            //不是所有內容都可以轉成JQUERY物件
+            $("<u>h2結束標籤的後面</u>").insertAfter('#myH');
+            $("<u>h2開始標籤的前面</u>").insertBefore('#myH');
+
+            $("WHITE LESS").insertBefore('#myH'); //純文字無意義的內容無效，若想增加可在前後加標籤即可
+            // $('#myH').empty(); 內部內容
+            $('#myH').remove(); // 全部清除
+
+
+            // $('#myH').append("Do more")
+            //         .prepend("white less")
+            //         .after("<u>h2結束標籤的後面</u>")
+            //         .before("<u>h2開始標籤的前面</u>")
 
             //移除
             //$('#names').empty();
@@ -58,6 +125,66 @@
                     $(this).remove();
                 }
             })
+
+            $('select').on('change',function(){
+                opt = $('select>:selected');
+                ext = opt.text();
+                tet = $(this).val();
+                index = opt.index();
+                $('#texxt').text(`${index} - ${ext} - ${tet}`);
+            })
+
+            $('a[href^=https]').attr('target','_blank');
+
+            // 基本上除了以下3個屬性用prop，其他都是用attr
+            // checked、disabled、selected => prop("checked",true),prop("checked",false)
+            // $('#div2 :checkbox:nth-child(1)').prop('checked'); //ture
+            // $('#div2 :checkbox:nth-child(2)').prop('checked'); //ture
+            // $('#div2 :checkbox:nth-child(3)').prop('checked'); //ture
+            // $('#div2 :checkbox:nth-child(4)').prop('checked'); //false
+            // $('#div2 :checkbox:nth-child(5)').prop('checked'); //ture
+
+            $('#toggle').on('change', function(){
+                b = $(this).prop('checked');
+                $(':checkbox[name="a"]').prop('checked',b);
+            })
+
+            $('h1').addClass('s1').on({
+                'mouseenter': function(){
+                    $(this).removeClass('s1').addClass('s2');
+                },
+                'mouseleave': function(){
+                    $(this).removeClass('s2').addClass('s1');
+                }
+            });
+
+            $('#classtoggle').on('click',function(){
+                // const th = $('#theH');
+                // if(th.hasClass('s2')){
+                //     th.removeClass('s2')
+                // }else{
+                //     th.addClass('s2')
+                // }
+                $('#theH').toggleClass('s2')
+            })
+
+            $('#togglecheckbox').on('click', function(){
+                $(':checkbox[name="a"]').each(function(){
+                    b = !$(this).prop('checked');
+                    $(this).prop('checked', b);
+                })
+            })
+
+            $('#togglechecked').on('click',function(){
+                const thespan = $('#aw');
+                let datas = [];
+                $(':checked[name="a"]').each(function(){
+                    datas.push($(this).val());
+                })
+                thespan.append(datas.join(","));
+            });
+
+
         })
     </script>
 </body>
